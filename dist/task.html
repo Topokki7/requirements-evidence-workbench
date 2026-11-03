@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>任务详情｜防漏汤需求跟踪工作台</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="task-detail.css">
+</head>
+<body class="detail-page">
+  <a class="skip-link" href="#taskMain">跳到任务内容</a>
+  <header class="detail-topbar">
+    <a class="detail-brand" href="index.html"><span class="brand-mark">追</span><span><strong>证据工作台</strong><small>任务处理中心</small></span></a>
+    <div class="detail-top-actions">
+      <label class="role-picker">当前演示角色
+        <select id="detailRole" aria-label="切换详情页演示角色">
+          <option value="test">测试组长</option>
+          <option value="project">项目负责人</option>
+          <option value="design">设计组长</option>
+          <option value="member">普通成员</option>
+        </select>
+      </label>
+      <button class="secondary reset-demo-trigger" id="resetDemoBtn">↻ 一键恢复演示</button>
+      <a class="back-link" href="index.html">← 返回工作台</a>
+    </div>
+  </header>
+
+  <main id="taskMain" class="detail-main">
+    <nav class="breadcrumb" aria-label="面包屑"><a href="index.html">工作台</a><span>›</span><span id="crumbRequirement">REQ-LEAK-001</span><span>›</span><strong id="crumbTask">T-LEAK-B-V2</strong></nav>
+
+    <section class="task-hero panel">
+      <div>
+        <p class="kicker" id="taskType">测试任务</p>
+        <h1 id="taskTitle">密封保持重新测试</h1>
+        <p id="taskSubtitle" class="task-subtitle">每个实验任务独立判断、独立归责，不与其他测试共用结论。</p>
+      </div>
+      <div class="hero-status">
+        <span id="taskStatus" class="badge amber">待重新测试</span>
+        <span class="source-tag">全合成演示</span>
+      </div>
+      <dl class="task-meta">
+        <div><dt>任务编号</dt><dd id="metaTask">T-LEAK-B-V2</dd></div>
+        <div><dt>关联需求</dt><dd><a id="metaRequirement" class="meta-link" href="requirement.html?requirement=REQ-LEAK-001">REQ-LEAK-001</a></dd></div>
+        <div><dt>当前方案</dt><dd id="metaVersion">V2 · 当前正式版本</dd></div>
+        <div><dt>负责人</dt><dd id="metaOwner">测试组长</dd></div>
+        <div><dt>审核人</dt><dd id="metaReviewer">项目负责人</dd></div>
+        <div><dt>目标日期</dt><dd id="metaDue">2026-11-06</dd></div>
+      </dl>
+    </section>
+
+    <section class="requirement-summary panel" aria-label="关联需求摘要">
+      <div class="requirement-summary-icon">需</div>
+      <div class="requirement-summary-copy">
+        <p class="kicker">关联需求</p>
+        <h2><a id="requirementSummaryLink" href="requirement.html?requirement=REQ-LEAK-001"><span id="requirementSummaryName">外卖盒密封防漏汤需求</span>（<span id="requirementSummaryCode">REQ-LEAK-001</span>）</a></h2>
+        <p id="requirementSummaryText">正在读取需求内容…</p>
+        <p id="requirementMissing" class="requirement-missing" hidden></p>
+      </div>
+      <div class="requirement-summary-action">
+        <span id="requirementSummaryStatus" class="badge amber">读取中</span>
+        <a id="openRequirementDetail" class="detail-link compact-link" href="requirement.html?requirement=REQ-LEAK-001">查看需求详情 <span>→</span></a>
+      </div>
+    </section>
+
+    <section class="lifecycle panel" aria-label="任务状态流转">
+      <div class="lifecycle-head"><div><p class="kicker">状态流转</p><h2>从执行到关闭</h2></div><span>各状态分别留痕</span></div>
+      <ol id="lifecycleSteps" class="lifecycle-steps"></ol>
+    </section>
+
+    <section id="acceptancePanel" class="acceptance-panel panel" aria-label="验收与关闭" hidden>
+      <div class="acceptance-icon">✓</div>
+      <div class="acceptance-copy">
+        <p class="kicker">需求级检查</p>
+        <h2 id="acceptanceTitle">需求关闭条件</h2>
+        <p id="acceptanceHint">系统正在检查证据、当前版本、必需测试、审核结果和未关闭问题。</p>
+        <div class="gate-head"><span>关闭条件</span><strong id="gateProgress">0 / 0</strong></div>
+        <ul id="gateList" class="gate-list"></ul>
+      </div>
+      <div class="acceptance-actions">
+        <button id="rejectAcceptance" class="secondary">退回测试补充</button>
+        <button id="closeAcceptance" class="primary">确认验收并关闭</button>
+      </div>
+    </section>
+
+    <nav class="detail-tabs" role="tablist" aria-label="任务详情标签">
+      <button class="active" role="tab" aria-selected="true" data-panel="overview">任务概览</button>
+      <button role="tab" aria-selected="false" data-panel="execution">执行与证据</button>
+      <button role="tab" aria-selected="false" data-panel="failure">未通过项处理</button>
+      <button role="tab" aria-selected="false" data-panel="audit">操作与审核记录</button>
+    </nav>
+
+    <section id="panel-overview" class="detail-panel" data-detail-panel="overview">
+      <div class="detail-grid two-one">
+        <article class="panel detail-card criterion-card">
+          <div class="panel-head"><div><p class="kicker">只属于本任务</p><h2>判定规则</h2></div><span id="criterionTask" class="source-tag">T-LEAK-B-V2</span></div>
+          <div class="detail-card-body">
+            <p id="criterionText" class="criterion-text"></p>
+            <div class="failure-map"><strong>未通过时记录到哪个任务</strong><p id="failureText"></p></div>
+          </div>
+        </article>
+        <article class="panel detail-card">
+          <div class="panel-head"><div><p class="kicker">责任分离</p><h2>谁执行、谁审核</h2></div></div>
+          <div class="detail-card-body responsibility-list">
+            <div><span>执行与登记</span><strong id="responsibleOwner">测试组长</strong></div>
+            <div><span>结果审核</span><strong id="responsibleReviewer">项目负责人</strong></div>
+            <div><span>方案修改</span><strong>设计组长</strong></div>
+            <div><span>最终关闭</span><strong>项目负责人</strong></div>
+          </div>
+        </article>
+      </div>
+      <article class="panel relation-card">
+        <div class="panel-head"><div><p class="kicker">对象层级</p><h2>任务在链路中的位置</h2></div><span class="source-tag">不会混成同一种状态</span></div>
+        <div class="relation-path" aria-label="需求关联关系">
+          <span>需求<strong id="relRequirement">REQ-LEAK-001</strong></span><b>→</b>
+          <span>方案<strong id="relVersion">V2 当前</strong></span><b>→</b>
+          <span>测试任务<strong id="relTask">T-LEAK-B-V2</strong></span><b>→</b>
+          <span>证据记录<strong id="relEvidence">E-TEST-B-02</strong></span><b>→</b>
+          <span>结果/问题<strong id="relOutcome">待执行</strong></span>
+        </div>
+      </article>
+    </section>
+
+    <section id="panel-execution" class="detail-panel" data-detail-panel="execution" hidden>
+      <section class="edit-banner panel" aria-label="编辑状态">
+        <div>
+          <span class="edit-mode"><i></i> 可编辑工作区</span>
+          <strong id="editState">尚未保存</strong>
+          <small id="editHint">测试组长可编辑并提交；项目负责人只在提交后审核。</small>
+        </div>
+        <div class="edit-actions">
+          <button id="resetDraft" class="secondary">恢复任务原值</button>
+          <button id="saveDraft" class="secondary">保存草稿</button>
+          <button id="submitReview" class="primary">提交审核</button>
+          <button id="returnReview" class="secondary review-action" hidden>退回补充</button>
+          <button id="approveReview" class="primary review-action" hidden>确认审核</button>
+        </div>
+      </section>
+      <div class="execution-grid">
+        <article class="panel detail-card">
+          <div class="panel-head"><div><p class="kicker">执行条件</p><h2>实验设置</h2></div><span class="source-tag">本机保存</span></div>
+          <div class="editable-grid">
+            <label>样本数量<input id="sampleCount" data-edit-field="sample" type="text"></label>
+            <label>测试环境<input id="environment" data-edit-field="environment" type="text"></label>
+            <label>使用设备<input id="equipment" data-edit-field="equipment" type="text"></label>
+            <label>执行批次<input id="batch" data-edit-field="batch" type="text"></label>
+          </div>
+        </article>
+        <article class="panel detail-card">
+          <div class="panel-head"><div><p class="kicker">标准操作</p><h2>执行步骤</h2></div></div>
+          <ol id="stepList" class="step-list"></ol>
+        </article>
+      </div>
+      <article class="panel result-card">
+        <div class="panel-head"><div><p class="kicker">逐项记录</p><h2>测量结果</h2><small>“实际结果”和“结论”可直接编辑，每一项独立判定。</small></div><span id="resultState" class="badge amber">待登记</span></div>
+        <div class="table-wrap"><table><thead><tr><th>指标</th><th>判定标准</th><th>实际结果</th><th>结论</th></tr></thead><tbody id="resultRows"></tbody></table></div>
+      </article>
+      <article class="panel evidence-card">
+        <div class="panel-head"><div><p class="kicker">来源可追溯</p><h2>证据记录</h2><small>本原型记录证据名称、说明和状态，不上传真实文件。</small></div><button id="addEvidence" class="secondary compact">＋ 新增证据</button></div>
+        <div id="evidenceList" class="evidence-list"></div>
+      </article>
+      <article class="panel note-card">
+        <div class="panel-head"><div><p class="kicker">执行人填写</p><h2>执行备注</h2></div><span id="charCount" class="source-tag">0 / 300</span></div>
+        <label class="note-field"><span>说明异常、样本处理或需要审核的内容</span><textarea id="executionNote" data-edit-field="note" rows="4" maxlength="300" placeholder="例如：样本 2 在 18 分钟时出现盒体外侧附着液体，已单独记录……"></textarea></label>
+      </article>
+    </section>
+
+    <section id="panel-failure" class="detail-panel" data-detail-panel="failure" hidden>
+      <div class="failure-toolbar panel">
+        <div><p class="kicker">本地记录</p><h2>处理未通过的测试项</h2><p>读取“执行与证据”页已填写的结果；只有存在“未通过”项时才能创建问题单。</p></div>
+        <div><button id="simulateFailure" class="primary">根据结果创建问题单</button><button id="resetFailure" class="secondary">清除问题处理演示</button></div>
+      </div>
+      <div id="defectEmpty" class="empty-state panel"><strong>当前尚未创建问题单（缺陷）</strong><p>只有本任务记录为未通过后，才会生成与本任务、当前版本和证据绑定的问题单。</p></div>
+      <div id="defectPanel" class="defect-layout" hidden>
+        <article class="panel defect-card">
+          <div class="panel-head"><div><p class="kicker">由本任务自动关联</p><h2 id="defectId">DEF-LEAK-014</h2></div><span class="badge red">待分析</span></div>
+          <div class="detail-card-body">
+            <h3 id="defectTitle">重量损失超过任务上限</h3>
+            <p id="defectReason"></p>
+            <dl class="record-grid compact">
+              <div><dt>来源任务</dt><dd id="defectTask"></dd></div>
+              <div><dt>影响版本</dt><dd id="defectVersion"></dd></div>
+              <div><dt>处理负责人</dt><dd>设计组长</dd></div>
+              <div><dt>严重程度</dt><dd>中</dd></div>
+            </dl>
+          </div>
+        </article>
+        <article class="panel closure-card">
+          <div class="panel-head"><div><p class="kicker">问题处理流程</p><h2>测试未通过后做什么</h2></div></div>
+          <ol class="closure-flow">
+            <li class="done"><strong>1. 记录未通过项</strong><small>绑定任务、版本、实际结果和证据</small></li>
+            <li class="active"><strong>2. 分析问题原因</strong><small>设计组长填写原因与修改建议</small></li>
+            <li><strong>3. 影响评估</strong><small>确定哪些任务必须重测</small></li>
+            <li><strong>4. 创建重新测试任务</strong><small>引用问题单与修订后的方案版本</small></li>
+            <li><strong>5. 重新测试与验收</strong><small>通过后仍需项目负责人确认关闭</small></li>
+          </ol>
+          <button id="createRetest" class="primary full">生成重新测试任务</button>
+        </article>
+      </div>
+      <article id="retestCard" class="panel retest-card" hidden>
+        <span class="badge amber">新建</span><div><p class="kicker">重新测试任务</p><h2 id="retestId">RT-LEAK-B-V2-02</h2><p>继承原判定规则，引用问题单和修订证据；不会覆盖原失败记录。</p></div>
+      </article>
+    </section>
+
+    <section id="panel-audit" class="detail-panel" data-detail-panel="audit" hidden>
+      <article class="panel audit-card">
+        <div class="panel-head"><div><p class="kicker">不可覆盖</p><h2>操作与审核记录</h2></div><span class="source-tag">审批通过不代表已应用</span></div>
+        <div id="auditList" class="audit-list"></div>
+      </article>
+    </section>
+  </main>
+  <div id="detailToast" class="toast" role="status" aria-live="polite"></div>
+  <div id="resetDemoModal" class="modal-backdrop" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resetDemoTitle" aria-describedby="resetDemoDescription">
+      <span class="modal-icon">↻</span>
+      <p class="kicker">全局演示工具</p>
+      <h2 id="resetDemoTitle">恢复到初始演示状态？</h2>
+      <p id="resetDemoDescription">将清空本工作台保存的草稿、提交、审核、问题单、重新测试和关闭状态，并返回 V2 初始正式版本。</p>
+      <div class="reset-scope"><strong>只影响本原型</strong><span id="resetRecordCount">正在检查本机演示记录…</span></div>
+      <div class="modal-actions"><button id="cancelDemoReset" class="secondary">取消</button><button id="confirmDemoReset" class="danger">确认恢复</button></div>
+    </section>
+  </div>
+  <script src="requirements-data.js"></script>
+  <script src="task.js"></script>
+  <script src="demo-reset.js"></script>
+</body>
+</html>

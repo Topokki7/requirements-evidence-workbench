@@ -1,0 +1,36 @@
+{
+  "kind": "frozen_case",
+  "skill_name": "coach-requirements-change-e68a0afd",
+  "input": {
+    "requirement_id": "REQ-LEAK-001",
+    "requirement_status": "approved",
+    "current_design_version": "V2",
+    "required_test_ids": ["TEST-A", "TEST-B"],
+    "runs": [
+      {
+        "test_id": "TEST-A",
+        "design_version": "V2",
+        "outcome": "pass",
+        "evidence_verified": true,
+        "reviewed_by_test_lead": true
+      },
+      {
+        "test_id": "TEST-B",
+        "design_version": "V1",
+        "outcome": "pass",
+        "evidence_verified": true,
+        "reviewed_by_test_lead": true
+      }
+    ],
+    "v1_to_v2_test_b_applicability_evidence": null
+  },
+  "rule_version": "requirements-contract-v1.1",
+  "student_expected": {
+    "validation_status": "pending_retest",
+    "closed": false
+  },
+  "rationale": "V2显示已验收的条件是测试A、B均通过。测试A已通过、有证据且已复核，但测试B尚未在V2通过；V1曾通过不代表V2能通过。只有存在证据证明测试B涉及的部分在V1、V2间完全未改变，并经复核生成当前版本适用性记录，才能承接为V2已验证。",
+  "confirmed_by_student": true,
+  "frozen_at": "2026-11-01",
+  "hash_recorded_in_state": true
+}

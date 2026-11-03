@@ -1,0 +1,30 @@
+{
+  "kind": "visual_acceptance",
+  "skill_name": "coach-requirements-change-e68a0afd",
+  "rounds": {
+    "wireframe": {
+      "status": "selected",
+      "selection": "action_first_dark_command_center",
+      "evidence": "assets/visual-style-dark-command-center-reference.png",
+      "notes": "用户选择行动优先布局、横向状态入口、桌面端优先和深色指挥中心风格。参考图仅用于视觉方向，不是最终页面验收证据。"
+    },
+    "interactive_prototype": {
+      "status": "developer_verified",
+      "evidence": "2026-11-02 本地浏览器交互验证：可填写实验条件、逐项结果、证据状态和备注；草稿刷新保留；提交后锁定；项目负责人可退回或确认；确认后进入待验收；控制台0错误0警告。此前1440/1280/390宽与三种情景验证继续有效。",
+      "notes": "根据用户反馈修正版本和任务模型，并新增独立任务详情页。详情页现为真实本地编辑工作区，不只是状态展示：执行人编辑、草稿持久化、提交复核、负责人确认、审计轨迹和首页状态联动均已实现。待办采用中文业务名称为主、版本在前、编号为辅；需求关闭由逐项关闭条件控制，未满足时禁止关闭。V3情景生成CH-DRAFT后V2仍为当前基线。最终验收须等待用户继续测试。"
+    },
+    "final_review": null
+  },
+  "checks": [
+    {"id": "result_first", "requirement": "首页有来源明确的完整案例，无须先上传", "status": "passed", "evidence": "首页直接显示全合成防漏汤案例与来源声明。"},
+    {"id": "three_views", "requirement": "至少三类有意义的数据可视化", "status": "passed", "evidence": "关联链路、验证矩阵、版本时间线三类视图已实现。"},
+    {"id": "linked_state", "requirement": "筛选或编辑后指标图表明细导出联动且可对账", "status": "passed", "evidence": "任务详情草稿、待复核和复核结果写入本机后，首页队列数量、任务摘要与验证矩阵读取同一状态；情景筛选与导出继续有效。"},
+    {"id": "drilldown", "requirement": "图形下钻到正确记录及证据", "status": "passed", "evidence": "点击证据节点显示E-01核验与公开边界说明。"},
+    {"id": "baseline_scenario", "requirement": "基线与场景分层并能恢复", "status": "passed", "evidence": "三种情景均为只读预览；CH-DRAFT不改V2当前基线；恢复基线通过。"},
+    {"id": "motion", "requirement": "动态对应变化，减少动画模式可用", "status": "passed", "evidence": "筛选、计数、矩阵与时间线随情景变化；prefers-reduced-motion规则已提供。"},
+    {"id": "responsive", "requirement": "桌面1440与1280及手机390宽截图可读", "status": "passed", "evidence": "本地浏览器验证1440、1280、390宽；1280与390页面scrollWidth等于clientWidth。"},
+    {"id": "student_test", "requirement": "学生亲自完成主链路并提供反馈", "status": "pending", "evidence": null}
+  ],
+  "overall_status": "interactive_prototype_ready_for_student_test",
+  "unresolved_blockers": []
+}

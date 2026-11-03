@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="合成案例：外卖盒防漏汤需求证据与方案变更跟踪工作台">
+  <title>防漏汤需求跟踪工作台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <div class="brand">
+        <span class="brand-mark">追</span>
+        <span><strong>证据工作台</strong><small>合成教学案例</small></span>
+      </div>
+      <nav>
+        <button class="nav-item active" data-target="requirementWorkspace"><span>⌂</span>工作台</button>
+        <button class="nav-item" data-target="chain"><span>⛓</span>需求关联关系</button>
+        <button class="nav-item" data-target="matrix"><span>▦</span>需求与测试对照表</button>
+        <button class="nav-item" data-target="scenario"><span>◇</span>影响模拟</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="live-dot"></span>
+        <strong>本地演示模式</strong>
+        <small>不接入真人、账号或外部通知</small>
+      </div>
+    </aside>
+
+    <main id="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">需求证据与方案变更跟踪工作台</p>
+          <h1>外卖盒防漏汤需求</h1>
+          <p class="snapshot"><span class="snapshot-version">当前正式方案 <strong id="currentSnapshotVersion">V2</strong></span><span>验收标准 v1.1</span><span>快照 2026-11-01</span><span>数据来源：全合成</span></p>
+        </div>
+        <div class="top-actions">
+          <label class="role-picker">当前角色
+            <select id="roleSelect" aria-label="切换演示角色">
+              <option value="project">项目负责人</option>
+              <option value="design">设计组长</option>
+              <option value="test">测试组长</option>
+              <option value="member">普通成员</option>
+            </select>
+          </label>
+          <button class="secondary reset-demo-trigger" id="resetDemoBtn">↻ 一键恢复演示</button>
+          <button class="secondary" id="exportBtn">导出追踪报告</button>
+        </div>
+      </header>
+
+      <section id="versionGuide" class="version-guide panel" aria-label="方案版本更替指示">
+        <div class="version-guide-head">
+          <div><p class="kicker">方案版本管理</p><h2 id="currentFormalHeading">当前正式方案：V2</h2></div>
+          <div class="version-guide-actions">
+            <span class="source-tag">方案版本与验收标准分别管理</span>
+            <button id="addDesignVersion" class="primary" type="button">＋ 新增方案</button>
+            <button id="editDesignVersion" class="secondary" type="button">修改所选方案</button>
+          </div>
+        </div>
+        <div class="version-browser">
+          <button id="versionPrevious" class="version-scroll-button" type="button" aria-label="查看上一个版本">‹</button>
+          <div id="versionTrack" class="version-track" role="group" aria-label="方案版本列表"></div>
+          <button id="versionNext" class="version-scroll-button" type="button" aria-label="查看下一个版本">›</button>
+        </div>
+        <div class="version-slider-row">
+          <span>较早版本</span>
+          <input id="versionSlider" type="range" min="0" max="2" value="2" step="1" aria-label="选择要查看的方案版本">
+          <span>较新版本</span>
+        </div>
+        <div id="versionDetail" class="version-detail" aria-live="polite"></div>
+      </section>
+
+      <section class="home-mode-bar panel" aria-label="主页视图切换">
+        <div><p class="kicker">主页视图</p><strong>先管理需求，再进入任务执行</strong></div>
+        <div class="home-mode-tabs" role="tablist">
+          <button class="active" type="button" role="tab" aria-selected="true" data-home-mode="requirements">需求中心</button>
+          <button type="button" role="tab" aria-selected="false" data-home-mode="tasks">任务执行</button>
+        </div>
+      </section>
+
+      <section id="requirementWorkspace" class="requirement-workspace" aria-label="需求中心">
+        <div class="requirement-command panel">
+          <div><p class="kicker">需求优先</p><h2>需求总览与验证任务</h2><p>先确认需要解决什么，再查看由哪些任务完成验证。</p></div>
+          <div class="requirement-command-actions"><button id="addRequirement" class="primary">＋ 新增需求</button><button id="addValidationTask" class="secondary">＋ 新增验证任务</button></div>
+        </div>
+        <div class="requirement-management-grid">
+          <article class="panel requirement-list-panel">
+            <div class="panel-head"><div><p class="kicker">当前需求</p><h2>需求清单</h2></div><span id="requirementCount" class="source-tag">0 条</span></div>
+            <div id="homeRequirementList" class="home-requirement-list"></div>
+          </article>
+          <article class="panel requirement-focus-panel">
+            <div class="requirement-focus-head">
+              <div><p class="kicker">所选需求</p><h2 id="homeRequirementTitle">—</h2><small id="homeRequirementCode">—</small></div>
+              <span id="homeRequirementStatus" class="badge amber">—</span>
+            </div>
+            <p id="homeRequirementDescription" class="requirement-focus-description"></p>
+            <dl class="requirement-focus-meta">
+              <div><dt>当前方案</dt><dd id="homeRequirementVersion">—</dd></div>
+              <div><dt>来源证据</dt><dd id="homeRequirementEvidence">—</dd></div>
+              <div><dt>负责人</dt><dd id="homeRequirementOwner">—</dd></div>
+            </dl>
+            <div id="homeRequirementMissing" class="home-requirement-missing" hidden></div>
+            <div class="requirement-focus-actions"><button id="editRequirement" class="secondary">修改需求</button><a id="openHomeRequirement" class="detail-link" href="requirement.html?requirement=REQ-LEAK-001">打开需求详情 <span>→</span></a></div>
+            <div class="linked-validation-head"><div><p class="kicker">验证关系</p><h3>哪些任务验证这条需求</h3></div><span id="linkedTaskCount" class="source-tag">0 项</span></div>
+            <div id="homeLinkedTasks" class="home-linked-tasks"></div>
+          </article>
+        </div>
+        <article id="changeLog" class="panel change-log-panel">
+          <div class="panel-head"><div><p class="kicker">修改可追溯</p><h2>需求与任务变更记录</h2><small>记录修改原因、修改前后及审批结果；待审批内容不会提前生效。</small></div><span id="pendingChangeCount" class="source-tag">0 项待审批</span></div>
+          <div id="changeLogList" class="change-log-list"></div>
+        </article>
+        <p id="requirementPermissionHint" class="permission-hint requirement-permission-hint"></p>
+      </section>
+
+      <div id="taskWorkspace" hidden>
+
+      <section id="overview" class="status-strip" aria-label="待处理状态汇总">
+        <button class="status-card amber" data-filter="retest">
+          <span class="status-icon">↻</span><span><small>待重新测试</small><strong id="countRetest">2</strong></span><b>›</b>
+        </button>
+        <button class="status-card blue" data-filter="approval">
+          <span class="status-icon">□</span><span><small>待审批</small><strong id="countApproval">1</strong></span><b>›</b>
+        </button>
+        <button class="status-card purple" data-filter="acceptance">
+          <span class="status-icon">✓</span><span><small>待验收</small><strong id="countAcceptance">1</strong></span><b>›</b>
+        </button>
+        <button class="status-card red" data-filter="evidence">
+          <span class="status-icon">!</span><span><small>需求来源资料待补充</small><strong id="countEvidence">1</strong></span><b>›</b>
+        </button>
+      </section>
+
+      <section class="workspace-grid">
+        <article id="tasks" class="panel tasks-panel">
+          <div class="panel-head">
+            <div><p class="kicker">当前队列</p><h2>待处理清单</h2></div>
+            <button class="text-button" id="clearFilter">全部</button>
+          </div>
+          <div id="taskList" class="task-list" aria-live="polite"></div>
+        </article>
+
+        <article id="chain" class="panel chain-panel">
+          <div class="panel-head">
+            <div><p class="kicker">所选待办</p><h2 id="chainTitle">V2 · 密封保持（重量损失）重新测试</h2></div>
+            <span id="requirementState" class="badge amber">待重新测试</span>
+          </div>
+          <div class="chain-visual" aria-label="证据到测试的关联图">
+            <button class="chain-node cyan" data-detail="evidence"><span>证据</span><strong id="evidenceLabel">E-01 已确认有效</strong><small>合成需求记录</small></button>
+            <span class="connector">→</span>
+            <button class="chain-node blue" data-detail="requirement"><span>需求</span><strong id="requirementLabel">REQ-LEAK-001</strong><small>已批准</small></button>
+            <span class="connector">→</span>
+            <button class="chain-node violet" data-detail="design"><span>方案</span><strong id="designLabel">方案 V2</strong><small id="designState">当前已批准</small></button>
+            <span class="connector">→</span>
+            <button class="chain-node green" data-detail="tests"><span>测试</span><strong id="testLabel">A 通过 · B 待重新测试</strong><small>验收标准 v1.1</small></button>
+          </div>
+          <div id="detailDrawer" class="detail-drawer">
+            <strong>为什么需要重新测试</strong>
+            <p>测试 B 只在 V1 通过。V1 结果不能直接用于 V2，除非补充“旧测试结果可沿用”的证明材料，并经测试组长审核确认。</p>
+          </div>
+          <div id="ruleNote" class="rule-note" aria-live="polite"></div>
+          <div class="task-detail-actions"><a id="openTaskDetail" class="detail-link" href="task.html?task=T-LEAK-B-V2">打开任务详情与未通过项处理 <span>→</span></a></div>
+        </article>
+
+        <article class="panel approval-panel">
+          <div class="panel-head">
+            <div><p class="kicker">治理</p><h2>审批与版本</h2></div>
+          </div>
+          <ol class="approval-flow">
+            <li class="done"><span></span><div><strong>设计组长提交</strong><small>方案 V2 · 已完成</small></div></li>
+            <li class="done"><span></span><div><strong>项目负责人批准</strong><small>保留操作与审核记录</small></div></li>
+            <li class="active"><span></span><div><strong>测试组长审核确认</strong><small>测试 B 待处理</small></div></li>
+            <li><span></span><div><strong>项目负责人验收</strong><small>测试完成后可操作</small></div></li>
+          </ol>
+          <div class="version-list">
+            <button data-version="V2"><span><strong>V2</strong><small>当前正式版本</small></span><em>当前</em></button>
+            <button data-version="V1"><span><strong>V1</strong><small>旧测试已保留</small></span><b>›</b></button>
+          </div>
+          <button class="primary full" id="roleAction">查看待重新测试项</button>
+          <p id="permissionHint" class="permission-hint">项目负责人可审批，但不能从预览直接修改正式版本。</p>
+        </article>
+      </section>
+
+      <section class="insight-grid">
+        <article class="panel metrics-panel">
+          <div class="panel-head"><div><p class="kicker">可对账指标</p><h2>当前正式版本</h2></div><span class="source-tag">4 条已批准需求</span></div>
+          <div class="metrics">
+            <div><small>有效证据覆盖比例</small><strong id="metricEvidence">75%</strong><span>3 / 4</span></div>
+            <div><small>已落实到方案的需求比例</small><strong id="metricDesign">75%</strong><span>3 / 4</span></div>
+            <div><small>当前版本已通过测试的需求比例</small><strong id="metricVerification">25%</strong><span>1 / 4</span></div>
+            <div><small>已关闭</small><strong id="metricClosed">0</strong><span>需负责人确认</span></div>
+          </div>
+        </article>
+
+        <article id="scenario" class="panel scenario-panel">
+          <div class="panel-head">
+            <div><p class="kicker">只读试算</p><h2>变更模拟与影响分析</h2></div>
+            <span id="scenarioBadge" class="source-tag">当前正式版本</span>
+          </div>
+          <div class="scenario-selector-wrap">
+            <label>选择模拟场景
+              <select id="scenarioSelect">
+                <option value="baseline">当前正式版本</option>
+                <option value="designV3">假设发现结构问题：V2 → V3</option>
+                <option value="strict">重量差 1g → 0.5g</option>
+                <option value="evidenceOff">一条证据不再有效</option>
+              </select>
+            </label>
+            <div class="scenario-manager-actions"><button id="addScenario" class="secondary" type="button">＋ 新增场景</button><button id="editScenario" class="secondary" type="button">修改场景</button><button id="deleteScenario" class="secondary" type="button">删除场景</button></div>
+          </div>
+          <div id="impactSummary" class="impact-summary">尚未进入预览。正式数据未修改。</div>
+          <div class="scenario-actions">
+            <button class="secondary" id="resetScenario">恢复当前正式版本</button>
+            <button class="primary" id="createChange">根据模拟结果发起变更</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="lower-grid">
+        <article id="matrix" class="panel matrix-panel">
+          <div class="panel-head"><div><p class="kicker">核对视图</p><h2>需求与测试对照表</h2></div><span class="legend">● 当前通过　◐ 待重新测试　× 缺口</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>需求</th><th>证据</th><th>方案</th><th>测试 A</th><th>测试 B</th><th>关闭</th></tr></thead>
+              <tbody id="matrixBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+      </div>
+
+      <footer>
+        <span>全合成教学案例，不代表真实产品通过测试或获得认证。</span>
+        <span>预览与正式版本隔离 · 无外部通知 · 无真人账号</span>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="entityEditorModal" class="modal-backdrop" hidden>
+    <section class="modal-card entity-editor-card" role="dialog" aria-modal="true" aria-labelledby="entityEditorTitle">
+      <p class="kicker">本机演示数据</p>
+      <h2 id="entityEditorTitle">新增需求</h2>
+      <p id="entityEditorHint" class="entity-editor-hint">保存后只影响本原型，不会发送通知或修改外部系统。</p>
+      <form id="entityEditorForm">
+        <div id="requirementFields" class="entity-form-grid">
+          <label>需求编号<input id="editRequirementId" required maxlength="40" placeholder="例如 REQ-NEW-006"></label>
+          <label>需求名称<input id="editRequirementName" required maxlength="60" placeholder="例如 盒体耐冲击需求"></label>
+          <label class="wide">需求内容<textarea id="editRequirementDescription" required rows="4" maxlength="300"></textarea></label>
+          <label>当前状态<select id="editRequirementStatus"><option>需求来源资料待补充</option><option>测试进行中</option><option>待最终验收</option><option>已关闭</option></select></label>
+          <label>负责人<select id="editRequirementOwner"><option>项目负责人</option><option>设计组长</option><option>测试组长</option></select></label>
+          <label class="wide">需求来源<input id="editRequirementSource" maxlength="120" placeholder="说明需求来自哪里"></label>
+        </div>
+        <div id="taskFields" class="entity-form-grid" hidden>
+          <label>关联需求<select id="editTaskRequirement"></select></label>
+          <label>任务编号<input id="editTaskId" required maxlength="40" placeholder="例如 T-NEW-A-V2"></label>
+          <label class="wide">任务名称<input id="editTaskName" required maxlength="80" placeholder="例如 盒体冲击重新测试"></label>
+          <label>负责人<select id="editTaskOwner"><option>测试组长</option><option>设计组长</option><option>项目负责人</option></select></label>
+          <label>任务状态<select id="editTaskStatus"><option>待重新测试</option><option>待审批</option><option>待验收</option><option>已通过</option><option>已关闭</option></select></label>
+          <label>目标日期<input id="editTaskDue" type="date"></label>
+          <label class="wide">通过标准<textarea id="editTaskCriterion" required rows="3" maxlength="260"></textarea></label>
+        </div>
+        <div class="entity-form-grid change-reason-grid"><label class="wide">新增或修改原因<textarea id="editChangeReason" required rows="3" maxlength="260" placeholder="说明为什么新增或修改；这段内容会写入变更记录"></textarea></label></div>
+        <div class="modal-actions"><button id="cancelEntityEditor" class="secondary" type="button">取消</button><button class="primary" type="submit">保存</button></div>
+      </form>
+    </section>
+  </div>
+  <div id="resetDemoModal" class="modal-backdrop" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resetDemoTitle" aria-describedby="resetDemoDescription">
+      <span class="modal-icon">↻</span>
+      <p class="kicker">全局演示工具</p>
+      <h2 id="resetDemoTitle">恢复到初始演示状态？</h2>
+      <p id="resetDemoDescription">将清空本工作台保存的草稿、提交、审核、问题单、重新测试和关闭状态，并返回 V2 初始正式版本。</p>
+      <div class="reset-scope"><strong>只影响本原型</strong><span id="resetRecordCount">正在检查本机演示记录…</span></div>
+      <div class="modal-actions"><button id="cancelDemoReset" class="secondary">取消</button><button id="confirmDemoReset" class="danger">确认恢复</button></div>
+    </section>
+  </div>
+  <div id="versionEditorModal" class="modal-backdrop" hidden>
+    <section class="modal-card entity-editor-card" role="dialog" aria-modal="true" aria-labelledby="versionEditorTitle">
+      <p class="kicker">本机演示数据</p>
+      <h2 id="versionEditorTitle">新增方案版本</h2>
+      <p id="versionEditorHint" class="entity-editor-hint">新增版本先保存为草案，不会自动替换当前正式方案。</p>
+      <form id="versionEditorForm">
+        <div class="entity-form-grid">
+          <label>版本号<input id="editVersionCode" required maxlength="16" placeholder="例如 V3"></label>
+          <label>方案状态<select id="editVersionStatus"><option value="draft">草案</option><option value="review">待审批</option><option value="current">当前正式方案</option><option value="history">历史版本</option></select></label>
+          <label class="wide">方案名称<input id="editVersionName" required maxlength="80" placeholder="例如 加强型嵌入式结构"></label>
+          <label class="wide">方案内容<textarea id="editVersionSummary" required rows="3" maxlength="300" placeholder="说明这一版的主要结构、材料或工艺"></textarea></label>
+          <label class="wide">新增或替换原因<textarea id="editVersionReason" required rows="3" maxlength="300" placeholder="说明为什么需要这一版；若为历史版本，说明被替换原因"></textarea></label>
+          <label class="wide">相关任务或验证结果<textarea id="editVersionTasks" rows="3" maxlength="360" placeholder="每行一项，例如：密封保持测试（T-LEAK-B-V1）未通过"></textarea></label>
+        </div>
+        <div class="modal-actions"><button id="cancelVersionEditor" class="secondary" type="button">取消</button><button class="primary" type="submit">保存方案</button></div>
+      </form>
+    </section>
+  </div>
+  <div id="scenarioEditorModal" class="modal-backdrop" hidden>
+    <section class="modal-card entity-editor-card" role="dialog" aria-modal="true" aria-labelledby="scenarioEditorTitle">
+      <p class="kicker">本机模拟模板</p>
+      <h2 id="scenarioEditorTitle">新增模拟场景</h2>
+      <p class="entity-editor-hint">场景只用于试算影响，不会直接修改正式需求、方案或任务。</p>
+      <form id="scenarioEditorForm">
+        <div class="entity-form-grid">
+          <label class="wide">场景名称<input id="editScenarioName" required maxlength="80" placeholder="例如：供应商材料发生变化"></label>
+          <label>变更类型<select id="editScenarioCategory"><option>方案结构变化</option><option>验收标准变化</option><option>证据状态变化</option><option>材料或工艺变化</option><option>其他</option></select></label>
+          <label>待重新测试数量<input id="editScenarioRetest" type="number" min="0" max="99" required></label>
+          <label>资料待补数量<input id="editScenarioEvidenceCount" type="number" min="0" max="99" required></label>
+          <label>有效证据覆盖率（%）<input id="editScenarioEvidenceMetric" type="number" min="0" max="100" required></label>
+          <label>已落实到方案比例（%）<input id="editScenarioDesignMetric" type="number" min="0" max="100" required></label>
+          <label>当前版本测试通过率（%）<input id="editScenarioVerificationMetric" type="number" min="0" max="100" required></label>
+          <label class="wide">影响说明<textarea id="editScenarioSummary" required rows="4" maxlength="360" placeholder="说明这个假设会影响哪些需求、任务、证据或指标"></textarea></label>
+        </div>
+        <div class="modal-actions"><button id="cancelScenarioEditor" class="secondary" type="button">取消</button><button class="primary" type="submit">保存场景</button></div>
+      </form>
+    </section>
+  </div>
+  <script src="requirements-data.js"></script>
+  <script src="app.js"></script>
+  <script src="scenario-manager.js"></script>
+  <script src="version-manager.js"></script>
+  <script src="requirements-home.js"></script>
+  <script src="demo-reset.js"></script>
+</body>
+</html>

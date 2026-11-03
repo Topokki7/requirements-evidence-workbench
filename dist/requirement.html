@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>需求详情｜防漏汤需求跟踪工作台</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="task-detail.css">
+  <link rel="stylesheet" href="requirement-detail.css">
+</head>
+<body class="detail-page requirement-page">
+  <a class="skip-link" href="#requirementMain">跳到需求内容</a>
+  <header class="detail-topbar">
+    <a class="detail-brand" href="index.html"><span class="brand-mark">追</span><span><strong>证据工作台</strong><small>需求详情中心</small></span></a>
+    <div class="detail-top-actions">
+      <button class="secondary reset-demo-trigger" id="resetDemoBtn">↻ 一键恢复演示</button>
+      <a id="backToTask" class="back-link" href="index.html">← 返回工作台</a>
+    </div>
+  </header>
+
+  <main id="requirementMain" class="detail-main">
+    <nav class="breadcrumb" aria-label="面包屑"><a href="index.html">工作台</a><span>›</span><strong id="crumbRequirement">REQ-LEAK-001</strong></nav>
+
+    <section class="requirement-hero panel">
+      <div>
+        <p class="kicker">需求详情</p>
+        <h1 id="requirementTitle">外卖盒密封防漏汤需求</h1>
+        <p id="requirementDescription" class="task-subtitle"></p>
+      </div>
+      <div class="hero-status"><span id="requirementStatus" class="badge amber">读取中</span><span class="source-tag">全合成演示</span></div>
+      <dl class="task-meta requirement-meta">
+        <div><dt>需求编号</dt><dd id="metaRequirement">REQ-LEAK-001</dd></div>
+        <div><dt>当前方案</dt><dd id="metaVersion">V2 · 当前正式版本</dd></div>
+        <div><dt>负责人</dt><dd id="metaOwner">项目负责人</dd></div>
+        <div><dt>来源证据</dt><dd id="metaEvidence">E-01 · 已确认有效</dd></div>
+      </dl>
+    </section>
+
+    <section id="sourceGap" class="source-gap panel" hidden>
+      <div class="source-gap-icon">!</div>
+      <div><p class="kicker">为什么显示“需求来源资料待补充”</p><h2>尚有资料未补齐</h2><p>这不代表产品测试未通过；只是需求来源还不能被确认为有效证据。</p><ul id="missingList"></ul></div>
+    </section>
+
+    <section class="requirement-detail-grid">
+      <article class="panel requirement-card">
+        <div class="panel-head"><div><p class="kicker">需求原文</p><h2>具体要求</h2></div></div>
+        <p id="fullRequirement" class="requirement-prose"></p>
+      </article>
+      <article class="panel requirement-card">
+        <div class="panel-head"><div><p class="kicker">来源可追溯</p><h2>来源与证据资料</h2></div></div>
+        <dl class="requirement-records"><div><dt>来源</dt><dd id="sourceText"></dd></div><div><dt>证据状态</dt><dd id="sourceEvidence"></dd></div></dl>
+      </article>
+      <article class="panel requirement-card">
+        <div class="panel-head"><div><p class="kicker">判断依据</p><h2>验收标准</h2></div></div>
+        <ol id="acceptanceList" class="requirement-list"></ol>
+      </article>
+      <article class="panel requirement-card linked-task-card">
+        <div class="panel-head"><div><p class="kicker">任务拆分</p><h2>关联任务</h2></div></div>
+        <div id="linkedTasks" class="linked-tasks"></div>
+      </article>
+    </section>
+
+    <section class="panel close-condition-card">
+      <div class="panel-head"><div><p class="kicker">最终验收</p><h2>需求关闭条件</h2><small>条件全部满足后，项目负责人才能关闭需求。</small></div><span id="closeProgress" class="source-tag">0 / 0</span></div>
+      <ul id="closeConditionList" class="gate-list requirement-gates"></ul>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="resetDemoModal" class="modal-backdrop" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resetDemoTitle" aria-describedby="resetDemoDescription">
+      <span class="modal-icon">↻</span><p class="kicker">全局演示工具</p><h2 id="resetDemoTitle">恢复到初始演示状态？</h2>
+      <p id="resetDemoDescription">将清空本工作台保存的草稿、提交、审核、问题单、重新测试和关闭状态，并返回 V2 初始正式版本。</p>
+      <div class="reset-scope"><strong>只影响本原型</strong><span id="resetRecordCount">正在检查本机演示记录…</span></div>
+      <div class="modal-actions"><button id="cancelDemoReset" class="secondary">取消</button><button id="confirmDemoReset" class="danger">确认恢复</button></div>
+    </section>
+  </div>
+  <script src="requirements-data.js"></script>
+  <script src="requirement.js"></script>
+  <script src="demo-reset.js"></script>
+</body>
+</html>
